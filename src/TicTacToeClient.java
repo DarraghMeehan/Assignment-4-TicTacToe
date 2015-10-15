@@ -16,11 +16,12 @@ public class TicTacToeClient extends JApplet implements Runnable {
     private DataOutputStream output;
     private char myMark;
     private boolean myTurn;
-    private final char X_MARK = 'X', O_MARK = 'O';
+    private final char X_MARK = 'X', O_MARK = 'O', BLANK = ' ';
 
     // Set up user-interface and board
     public void init()
     {
+        // ADD BUTTON ..DISABLED
         Container container = getContentPane();
 
         // set up JTextArea to display messages to user
@@ -39,11 +40,15 @@ public class TicTacToeClient extends JApplet implements Runnable {
         // is a value from 0 to 8 indicating the position of the Square on
         // the board. Values 0, 1, and 2 are the first row, values 3, 4,
         // and 5 are the second row. Values 6, 7, and 8 are the third row.
+        //USE THIS CODE TO RESET BOARD
         for ( int row = 0; row < board.length; row++ ) {
 
             for ( int column = 0; column < board[ row ].length; column++ ) {
 
                 // create Square
+                // NOT RECREATING OBJECTS .. NOT NEEDED WHEN RESETING BOARD .. BLANK IT OUT
+                //setMark(  board[ row ][ column ],
+                       // ( myMark == X_MARK ? O_MARK : X_MARK ) );
                 board[ row ][ column ] = new Square( ' ', row * 3 + column );
                 boardPanel.add( board[ row ][ column ] );
             }
@@ -95,6 +100,10 @@ public class TicTacToeClient extends JApplet implements Runnable {
         try {
             myMark = input.readChar();
 
+            // EVENT LISTENER .. ACCESS TO INPUT/OUTPUT
+            // MAKE ACTIONLISTENER FOR BUTTON
+            // RESET BOARD
+
             // display player ID in event-dispatch thread
             SwingUtilities.invokeLater(
                     new Runnable() {
@@ -130,15 +139,16 @@ public class TicTacToeClient extends JApplet implements Runnable {
         }
 
         // Prints the winner to the clients
-        if ( message.equals( "Player1" ) ) {
+        else if ( message.equals( "Player1" ) ) {
             displayMessage( "GAME OVER\nPlayer 1 has won\n" );
         }
-        else if ( message.equals( "Player 2" ) ) {
+
+        else if ( message.equals( "Player2" ) ) {
             displayMessage( "GAME OVER\nPlayer 2 has won\n" );
         }
 
         // valid move occurred
-        if ( message.equals( "Valid move." ) ) {
+        else if ( message.equals( "Valid move." ) ) {
             displayMessage( "Valid move, please wait.\n" );
             setMark( currentSquare, myMark );
         }
@@ -246,13 +256,13 @@ public class TicTacToeClient extends JApplet implements Runnable {
             location = squareLocation;
 
             addMouseListener(
-                    new MouseAdapter() {
-                        public void mouseReleased( MouseEvent e )
-                        {
-                            setCurrentSquare( Square.this );
-                            sendClickedSquare( getSquareLocation() );
-                        }
+                new MouseAdapter() {
+                    public void mouseReleased( MouseEvent e )
+                    {
+                        setCurrentSquare( Square.this );
+                        sendClickedSquare( getSquareLocation() );
                     }
+                }
             );
 
         } // end Square constructor

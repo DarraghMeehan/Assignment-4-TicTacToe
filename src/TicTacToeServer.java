@@ -15,7 +15,7 @@ public class TicTacToeServer extends JFrame {
     private final int PLAYER_X = 0, PLAYER_O = 1;
     private final char X_MARK = 'X', O_MARK = 'O';
     private String gameState;
-    private int SIZE = 9;
+    private final int SIZE = 9;
     private int turns = 0;
 
     // set up tic-tac-toe server and GUI that displays messages
@@ -224,6 +224,7 @@ public class TicTacToeServer extends JFrame {
             gameState ="Player2";
             return true;
         }
+
         // On Diagonals
         // Left to Right
         if(board[0]=='X' && board[4]=='X' && board[8]=='X') {
